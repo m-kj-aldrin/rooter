@@ -1,3 +1,34 @@
+/**
+ * @template {"fetching" | "view-start" | "view-end"} T
+ */
+export class RouteEvent extends Event {
+  /**@type {Promise} */
+  #p;
+
+  /**
+   * @param {T} type
+   */
+  constructor(type) {
+    super(`route-${type}`);
+  }
+
+  get p() {
+    return this.#p;
+  }
+
+  set p(promise) {
+    this.#p = promise;
+  }
+
+  wait(ms = 0) {
+    this.#p = new Promise((res) => {
+      setTimeout(() => {
+        res();
+      }, ms);
+    });
+  }
+}
+
 /**@param {HTMLElement} element */
 function is_anchor(element) {
   if (element instanceof HTMLAnchorElement) {
@@ -101,8 +132,39 @@ async function await_script_load(scripts) {
   );
 }
 
+/**@param {Document} doc */
+function get_persist_elements(doc) {
+  //   return doc.querySelectorAll("[data-rooter-persist]");
+  /**@type {Map<string,HTMLElement>} */
+  let from_elements = new Map(
+    [...document.querySelectorAll("[data-rooter-persist]")].map((el) => [
+      el.getAttribute("data-rooter-persist"),
+      el,
+    ])
+  );
+
+  return from_elements;
+
+  //   let to_elements = new_doc.querySelectorAll("[data-rooter-persist]");
+
+  //   to_elements.forEach((el) => {
+  //     from_elements.get(el.getAttribute("data-rooter-persist")).to = el;
+  //   });
+
+  //   return from_elements;
+  //   console.log(...from_elements.values());
+}
+
 async function route(pathname) {
+  window.dispatchEvent(new RouteEvent("fetching"));
+
   let doc = await fetch_document(pathname);
+
+  let from_elements = get_persist_elements(doc);
+  //   persist_elements.forEach((el) => {
+  //     el.to.parentElement.insertBefore(el.from.cloneNode(true), el.to);
+  //     el.to.remove();
+  //   });
 
   let new_assets = dif_head(doc);
 
@@ -115,11 +177,28 @@ async function route(pathname) {
 
   await scripts_loaded;
 
+  let start_event = new RouteEvent("view-start");
+  window.dispatchEvent(start_event);
+
+  await start_event.p;
+
   document.head.querySelectorAll("style").forEach((style) => style.remove());
   document.head.append(...new_assets.styles);
-
   // TODO - UPDATE Body, we should get elements that need to stay intact between views first
   document.body.innerHTML = doc.body.innerHTML;
+
+  let to_elements = get_persist_elements(document);
+
+  from_elements.forEach((el) => {
+    let target_element = to_elements.get(
+      el.getAttribute("data-rooter-persist")
+    );
+
+    target_element?.insertAdjacentElement("afterend", el);
+    target_element?.remove();
+  });
+
+  window.dispatchEvent(new RouteEvent("view-end"));
 }
 
 document.body.addEventListener("click", (e) => {
