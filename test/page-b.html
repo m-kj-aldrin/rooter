@@ -11,13 +11,18 @@
     </script>
   </head>
   <body>
-    <header data-rooter-persist="header">
+    <header>
       <nav>
         <a href="/test">index</a>
-        <a href="/test/page-a.html">page a</a>
-        <a href="/test/page-b.html">page b</a>
+        <a href="/test/page-a.html"><span>page a</span></a>
+        <a href="/test/page-b.html" aria-current="page">page b</a>
       </nav>
     </header>
+    <form data-rooter-persist="controlls">
+      <fieldset>
+        <input type="text" />
+      </fieldset>
+    </form>
     <main>
       <h1>Page B</h1>
       <article>

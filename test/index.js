@@ -16,7 +16,7 @@ async function view_start_handler(e) {
   view_animation = document.body
     .querySelector("main")
     .animate([{ opacity: 1 }, { opacity: 0 }], {
-      duration: 500,
+      duration: 100,
       fill: "forwards",
     });
 
@@ -38,3 +38,18 @@ function view_end_handler(e) {
 
 window.addEventListener("route-view-start", view_start_handler);
 window.addEventListener("route-view-end", view_end_handler);
+
+window.addEventListener("submit", (e) => {
+  e.preventDefault();
+});
+
+window.addEventListener("change", (e) => {
+  /**@type {HTMLInputElement} */
+  let target = e.target;
+  let form = target.closest("form");
+  let parent = form.parentElement;
+  let prev = form.previousElementSibling;
+
+  form.remove();
+  parent.insertBefore(form, prev);
+});

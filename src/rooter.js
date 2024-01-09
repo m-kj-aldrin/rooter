@@ -160,7 +160,7 @@ async function route(pathname) {
 
   let doc = await fetch_document(pathname);
 
-  let from_elements = get_persist_elements(doc);
+  //   let from_elements = get_persist_elements(doc);
   //   persist_elements.forEach((el) => {
   //     el.to.parentElement.insertBefore(el.from.cloneNode(true), el.to);
   //     el.to.remove();
@@ -185,8 +185,11 @@ async function route(pathname) {
   document.head.querySelectorAll("style").forEach((style) => style.remove());
   document.head.append(...new_assets.styles);
   // TODO - UPDATE Body, we should get elements that need to stay intact between views first
-  document.body.innerHTML = doc.body.innerHTML;
+  // document.body.innerHTML = doc.body.innerHTML;
+  let old_body = document.body;
+  document.body.replaceWith(doc.body);
 
+  let from_elements = get_persist_elements(doc);
   let to_elements = get_persist_elements(document);
 
   from_elements.forEach((el) => {
@@ -194,16 +197,24 @@ async function route(pathname) {
       el.getAttribute("data-rooter-persist")
     );
 
-    target_element?.insertAdjacentElement("afterend", el);
-    target_element?.remove();
+    console.log(target_element);
+
+    // target_element?.replaceWith(el);
+    // target_element?.insertAdjacentElement("afterend", el);
+    // target_element?.remove();
   });
 
   window.dispatchEvent(new RouteEvent("view-end"));
 }
 
-document.body.addEventListener("click", (e) => {
+document.addEventListener("click", (e) => {
+  e.preventDefault();
+  console.log("hello");
   let anchor = get_anchor(e);
   if (anchor) {
+    e.preventDefault();
+    console.log(anchor.pathname, location.pathname);
+
     if (anchor.pathname == location.pathname) {
       return;
     }
