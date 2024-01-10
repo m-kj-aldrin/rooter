@@ -183,11 +183,9 @@ async function route(pathname) {
 
 document.addEventListener("click", (e) => {
   e.preventDefault();
-  console.log("hello");
   let anchor = get_anchor(e);
   if (anchor) {
     e.preventDefault();
-    console.log(anchor.pathname, location.pathname);
 
     if (anchor.pathname == location.pathname) {
       return;

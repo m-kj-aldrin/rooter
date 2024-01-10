@@ -22,7 +22,6 @@ function animate({ keyframes = [], options = {} }) {
      */
     run: function (element, overide_options = {}) {
       let full_options = { ...options, ...overide_options };
-      console.log(full_options);
       return element.animate(keyframes, full_options);
     },
     get settings() {
