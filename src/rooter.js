@@ -1,3 +1,5 @@
+import { fade_animation } from "./transitions.js";
+
 /**
  * @template {"fetching" | "view-start" | "view-end"} T
  */
@@ -197,3 +199,50 @@ document.addEventListener("click", (e) => {
     history.pushState(null, null, anchor.pathname);
   }
 });
+
+const ANIMATE_ATTR = "data-rooter-animate";
+
+/**
+ * @param {Document} doc
+ * @param {PlaybackDirection} direction
+ *  */
+function get_animate_elements(doc, direction = "normal") {
+  /**@type {NodeListOf<HTMLElement>} */
+  let elements = doc.querySelectorAll(`[${ANIMATE_ATTR}]`);
+
+  let p = [...elements]
+    .filter((el) => el.getAttribute(ANIMATE_ATTR) != "none")
+    .map((element) => {
+      let animation_type = element.getAttribute(ANIMATE_ATTR);
+
+      return new Promise((res) => {
+        fade_animation.run(element, { direction }).onfinish = res;
+      });
+    });
+
+  return Promise.all(p);
+}
+
+/**@param {RouteEvent<"view-start">} e */
+async function view_start_handler(e) {
+  e.p = get_animate_elements(document);
+  // let animate = document.body.getAttribute(ANIMATE_ATTR);
+  // if (animate == "none") {
+  //   return;
+  // }
+  // let view_animation = fade_animation.run(document.body);
+  // e.p = new Promise((res) => {
+  //   view_animation.onfinish = () => res();
+  // });
+}
+
+/**@param {RouteEvent<"view-end">} e */
+function view_end_handler(e) {
+  e.p = get_animate_elements(document, "reverse");
+  // let view_animation = fade_animation.run(document.body, {
+  //   direction: "reverse",
+  // });
+}
+
+window.addEventListener("route-view-start", view_start_handler);
+window.addEventListener("route-view-end", view_end_handler);

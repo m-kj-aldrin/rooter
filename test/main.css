@@ -1,3 +1,8 @@
 body {
     background-color: gainsboro;
 }
+
+[aria-current="page"]{
+    background-color: black;
+    color: white;
+}
