@@ -1,4 +1,4 @@
-import { fade_animation } from "./transitions.js";
+import { fade_animation, slide_animation } from "./transitions.js";
 
 const PERSIST_ATTR = "data-rooter-persist";
 const ANIMATE_ATTR = "data-rooter-animate";
@@ -219,32 +219,49 @@ function get_animate_elements(doc, direction = "normal") {
       let animation_type = element.getAttribute(ANIMATE_ATTR);
 
       return new Promise((res) => {
-        fade_animation.run(element, { direction }).onfinish = res;
+        slide_animation.run(element, { direction }).onfinish = res;
       });
     });
 
-  return Promise.all(p);
+  // return Promise.all(p);
+  return p;
 }
 
 /**@param {RouteEvent<"view-start">} e */
 async function view_start_handler(e) {
-  e.p = get_animate_elements(document);
-  // let animate = document.body.getAttribute(ANIMATE_ATTR);
-  // if (animate == "none") {
-  //   return;
-  // }
-  // let view_animation = fade_animation.run(document.body);
-  // e.p = new Promise((res) => {
-  //   view_animation.onfinish = () => res();
-  // });
+  /**@type {Promise[]} */
+  let animation_promise = [];
+
+  let animate = document.body.getAttribute(ANIMATE_ATTR);
+  if (animate != "none") {
+    animation_promise.push(
+      new Promise((res) => (fade_animation.run(document.body).onfinish = res))
+    );
+  }
+
+  animation_promise.push(...get_animate_elements(document));
+  e.p = Promise.all(animation_promise);
 }
 
 /**@param {RouteEvent<"view-end">} e */
 function view_end_handler(e) {
-  e.p = get_animate_elements(document, "reverse");
-  // let view_animation = fade_animation.run(document.body, {
-  //   direction: "reverse",
-  // });
+  /**@type {Promise[]} */
+  let animation_promise = [];
+
+  let animate = document.body.getAttribute(ANIMATE_ATTR);
+  if (animate != "none") {
+    animation_promise.push(
+      new Promise(
+        (res) =>
+          (fade_animation.run(document.body, {
+            direction: "reverse",
+          }).onfinish = res)
+      )
+    );
+  }
+
+  animation_promise.push(...get_animate_elements(document, "reverse"));
+  e.p = Promise.all(animation_promise);
 }
 
 window.addEventListener("route-view-start", view_start_handler);
