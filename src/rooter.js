@@ -1,5 +1,8 @@
 import { fade_animation } from "./transitions.js";
 
+const PERSIST_ATTR = "data-rooter-persist";
+const ANIMATE_ATTR = "data-rooter-animate";
+
 /**
  * @template {"fetching" | "view-start" | "view-end"} T
  */
@@ -134,8 +137,6 @@ async function await_script_load(scripts) {
   );
 }
 
-const PERSIST_ATTR = "data-rooter-persist";
-
 /**@param {Document} doc */
 function get_persist_elements(doc) {
   return doc.querySelectorAll(`[${PERSIST_ATTR}]`);
@@ -200,7 +201,9 @@ document.addEventListener("click", (e) => {
   }
 });
 
-const ANIMATE_ATTR = "data-rooter-animate";
+window.addEventListener("popstate", (e) => {
+  route(location.pathname);
+});
 
 /**
  * @param {Document} doc
