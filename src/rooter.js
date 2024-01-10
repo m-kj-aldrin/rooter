@@ -132,41 +132,19 @@ async function await_script_load(scripts) {
   );
 }
 
+const PERSIST_ATTR = "data-rooter-persist";
+
 /**@param {Document} doc */
 function get_persist_elements(doc) {
-  //   return doc.querySelectorAll("[data-rooter-persist]");
-  /**@type {Map<string,HTMLElement>} */
-  let from_elements = new Map(
-    [...document.querySelectorAll("[data-rooter-persist]")].map((el) => [
-      el.getAttribute("data-rooter-persist"),
-      el,
-    ])
-  );
-
-  return from_elements;
-
-  //   let to_elements = new_doc.querySelectorAll("[data-rooter-persist]");
-
-  //   to_elements.forEach((el) => {
-  //     from_elements.get(el.getAttribute("data-rooter-persist")).to = el;
-  //   });
-
-  //   return from_elements;
-  //   console.log(...from_elements.values());
+  return doc.querySelectorAll(`[${PERSIST_ATTR}]`);
 }
 
 async function route(pathname) {
   window.dispatchEvent(new RouteEvent("fetching"));
 
-  let doc = await fetch_document(pathname);
+  let new_document = await fetch_document(pathname);
 
-  //   let from_elements = get_persist_elements(doc);
-  //   persist_elements.forEach((el) => {
-  //     el.to.parentElement.insertBefore(el.from.cloneNode(true), el.to);
-  //     el.to.remove();
-  //   });
-
-  let new_assets = dif_head(doc);
+  let new_assets = dif_head(new_document);
 
   document.head.querySelectorAll("script:not([src])").forEach((script) => {
     script.remove();
@@ -184,25 +162,21 @@ async function route(pathname) {
 
   document.head.querySelectorAll("style").forEach((style) => style.remove());
   document.head.append(...new_assets.styles);
-  // TODO - UPDATE Body, we should get elements that need to stay intact between views first
-  // document.body.innerHTML = doc.body.innerHTML;
+
   let old_body = document.body;
-  document.body.replaceWith(doc.body);
 
-  let from_elements = get_persist_elements(doc);
-  let to_elements = get_persist_elements(document);
-
-  from_elements.forEach((el) => {
-    let target_element = to_elements.get(
-      el.getAttribute("data-rooter-persist")
-    );
-
-    console.log(target_element);
-
-    // target_element?.replaceWith(el);
-    // target_element?.insertAdjacentElement("afterend", el);
-    // target_element?.remove();
+  // Check new body and look for persist elements, find coresponding element in the old body and use it if exist
+  get_persist_elements(new_document).forEach((el) => {
+    let id = el.getAttribute(PERSIST_ATTR);
+    let old_el = old_body.querySelector(`[${PERSIST_ATTR}=${id}]`);
+    if (old_el) {
+      el.replaceWith(old_el);
+    } else {
+      //...
+    }
   });
+
+  document.body.replaceWith(new_document.body);
 
   window.dispatchEvent(new RouteEvent("view-end"));
 }

@@ -8,17 +8,37 @@ async function wait(ms = 0) {
     }, ms);
   });
 }
-/**@type {Animation} */
-let view_animation;
+
+/**
+ * @param {Object} o
+ * @param {Keyframe[]} o.keyframes
+ * @param {KeyframeAnimationOptions} o.options
+ */
+function animate({ keyframes = [], options = {} }) {
+  return {
+    /**
+     * @param {HTMLElement} element
+     * @param {KeyframeAnimationOptions} [overide_options]
+     */
+    run: function (element, overide_options = {}) {
+      let full_options = { ...options, ...overide_options };
+      console.log(full_options);
+      return element.animate(keyframes, full_options);
+    },
+    get settings() {
+      return { keyframes, options };
+    },
+  };
+}
+
+let fade_animation = animate({
+  keyframes: [{ opacity: 1 }, { opacity: 0 }],
+  options: { duration: 200, fill: "forwards" },
+});
 
 /**@param {RouteEvent<"view-start">} e */
 async function view_start_handler(e) {
-  view_animation = document.body
-    .querySelector("main")
-    .animate([{ opacity: 1 }, { opacity: 0 }], {
-      duration: 100,
-      fill: "forwards",
-    });
+  let view_animation = fade_animation.run(document.body);
 
   e.p = new Promise((res) => {
     view_animation.onfinish = () => res();
@@ -27,29 +47,10 @@ async function view_start_handler(e) {
 
 /**@param {RouteEvent<"view-end">} e */
 function view_end_handler(e) {
-  document.body
-    .querySelector("main")
-    .animate([{ opacity: 1 }, { opacity: 0 }], {
-      duration: 500,
-      fill: "forwards",
-      direction: "reverse",
-    });
+  let view_animation = fade_animation.run(document.body, {
+    direction: "reverse",
+  });
 }
 
 window.addEventListener("route-view-start", view_start_handler);
 window.addEventListener("route-view-end", view_end_handler);
-
-window.addEventListener("submit", (e) => {
-  e.preventDefault();
-});
-
-window.addEventListener("change", (e) => {
-  /**@type {HTMLInputElement} */
-  let target = e.target;
-  let form = target.closest("form");
-  let parent = form.parentElement;
-  let prev = form.previousElementSibling;
-
-  form.remove();
-  parent.insertBefore(form, prev);
-});
