@@ -210,19 +210,34 @@ const animation_type_map = {
   fade: fade_animation,
 };
 
+function default_animation() {
+  let animate = document.body.getAttribute(ANIMATE_ATTR);
+  if (animate != "none") {
+    /**@type {keyof typeof animation_type_map} */
+    let animation_type = document.body.getAttribute(ANIMATE_ATTR) ?? "fade";
+    let animation = animation_type_map[animation_type];
+
+    return [
+      new Promise((res) => (animation.run(document.body).onfinish = res)),
+    ];
+  }
+  return [];
+}
+
 /**
  * @param {Document} doc
  * @param {PlaybackDirection} direction
  *  */
-function get_animate_elements(doc, direction = "normal") {
+function animate_elements(doc, direction = "normal") {
   /**@type {NodeListOf<HTMLElement>} */
   let elements = doc.querySelectorAll(`[${ANIMATE_ATTR}]`);
 
-  let p = [...elements]
+  let animation_promises = [...elements]
     .filter((el) => el.getAttribute(ANIMATE_ATTR) != "none")
     .map((element) => {
       /**@type {keyof typeof animation_type_map} */
       let animation_type = element.getAttribute(ANIMATE_ATTR);
+
       if (!(animation_type in animation_type_map)) return Promise.resolve();
 
       let animation = animation_type_map[animation_type];
@@ -232,23 +247,14 @@ function get_animate_elements(doc, direction = "normal") {
       });
     });
 
-  // return Promise.all(p);
-  return p;
+  return animation_promises;
 }
 
 /**@param {RouteEvent<"view-start">} e */
 async function view_start_handler(e) {
-  /**@type {Promise[]} */
-  let animation_promise = [];
+  let animation_promise = default_animation();
+  animation_promise.push(...animate_elements(document));
 
-  let animate = document.body.getAttribute(ANIMATE_ATTR);
-  if (animate != "none") {
-    animation_promise.push(
-      new Promise((res) => (fade_animation.run(document.body).onfinish = res))
-    );
-  }
-
-  animation_promise.push(...get_animate_elements(document));
   e.p = Promise.all(animation_promise);
 }
 
@@ -269,7 +275,7 @@ function view_end_handler(e) {
     );
   }
 
-  animation_promise.push(...get_animate_elements(document, "reverse"));
+  animation_promise.push(...animate_elements(document, "reverse"));
   e.p = Promise.all(animation_promise);
 }
 
