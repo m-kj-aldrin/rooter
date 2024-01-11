@@ -54,47 +54,73 @@ function get_anchor(event) {
 
 // TODO - Do we need to create a new script element to make the browser execute it when appended if its allready is a part of a document?
 
-/**@param {HTMLHeadElement} new_head */
-function dif_scripts(new_head) {
+/**@param {Document} new_document */
+function attach_incoming_scripts(new_document) {
   let current_head = document.head;
 
-  /**@type {NodeListOf<HTMLScriptElement>} */
-  let current_scripts = current_head.querySelectorAll("script[src]");
+  // /**@type {NodeListOf<HTMLScriptElement>} */
+  // let current_scripts = current_head.querySelectorAll("script[src]");
+  let current_scripts = document.scripts;
 
-  /**@type {NodeListOf<HTMLScriptElement>} */
-  let new_scripts = new_head.querySelectorAll("script[src]");
-
-  let bare_new_scripts = [
-    ...new_head.querySelectorAll("script:not([src])"),
-  ].map((script) => {
-    let fresh_script = document.createElement("script");
-    fresh_script.textContent = script.textContent;
-    return fresh_script;
-  });
+  // /**@type {NodeListOf<HTMLScriptElement>} */
+  // let new_scripts = new_head.querySelectorAll("script[src]");
+  let incoming_scripts = new_document.scripts;
 
   /**@type {HTMLScriptElement[]} */
-  let new_scripts_dif = bare_new_scripts;
+  let new_scripts = [];
 
-  for (let i = 0; i < new_scripts.length; i++) {
-    const new_script = new_scripts[i];
+  // for (const incoming of incoming_scripts) {
+  //   for (const current of current_scripts) {
+  //     if (incoming.src != current.src || !incoming.src) {
+  //       let new_script_el = document.createElement("script");
+  //       new_script_el.src = incoming.src;
+  //       new_script_el.innerHTML = incoming.innerHTML;
 
-    /**@type {HTMLScriptElement} */
-    let match;
-    for (let j = 0; j < current_scripts.length; j++) {
-      const current_script = current_scripts[j];
-      if (new_script.src == current_script.src) {
-        match = new_script;
+  //       new_scripts.push(new_script_el);
+  //     }
+  //   }
+  // }
+
+  for (const incoming of incoming_scripts) {
+    for (const current of current_scripts) {
+      if (incoming.src == current.src) {
+        incoming.remove();
       }
-    }
-
-    if (!match) {
-      let fresh_script = document.createElement("script");
-      fresh_script.src = new_script.src;
-      new_scripts_dif.push(fresh_script);
     }
   }
 
-  return new_scripts_dif;
+  // let bare_new_scripts = [
+  //   ...new_document.querySelectorAll("script:not([src])"),
+  // ].map((script) => {
+  //   let fresh_script = document.createElement("script");
+  //   fresh_script.textContent = script.textContent;
+  //   return fresh_script;
+  // });
+
+  // /**@type {HTMLScriptElement[]} */
+  // let new_scripts_dif = bare_new_scripts;
+
+  // for (let i = 0; i < new_scripts.length; i++) {
+  //   const new_script = new_scripts[i];
+
+  //   /**@type {HTMLScriptElement} */
+  //   let match;
+  //   for (let j = 0; j < current_scripts.length; j++) {
+  //     const current_script = current_scripts[j];
+  //     if (new_script.src == current_script.src) {
+  //       match = new_script;
+  //     }
+  //   }
+
+  //   if (!match) {
+  //     let fresh_script = document.createElement("script");
+  //     fresh_script.src = new_script.src;
+  //     new_scripts_dif.push(fresh_script);
+  //   }
+  // }
+
+  // return new_scripts_dif;
+  return [];
 }
 
 /**@param {HTMLHeadElement} new_head */
@@ -108,7 +134,7 @@ function dif_styles(new_head) {
 function dif_head(new_document) {
   let new_head = new_document.head;
 
-  let new_scripts = dif_scripts(new_head);
+  let new_scripts = attach_incoming_scripts(new_document);
   let new_styles = dif_styles(new_head);
 
   return {
@@ -204,6 +230,8 @@ document.addEventListener("click", (e) => {
 window.addEventListener("popstate", (e) => {
   route(location.pathname);
 });
+
+// + + + ANIMATION - - -
 
 const animation_type_map = {
   slide: slide_animation,
