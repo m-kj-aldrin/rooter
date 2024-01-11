@@ -205,6 +205,11 @@ window.addEventListener("popstate", (e) => {
   route(location.pathname);
 });
 
+const animation_type_map = {
+  slide: slide_animation,
+  fade: fade_animation,
+};
+
 /**
  * @param {Document} doc
  * @param {PlaybackDirection} direction
@@ -216,10 +221,14 @@ function get_animate_elements(doc, direction = "normal") {
   let p = [...elements]
     .filter((el) => el.getAttribute(ANIMATE_ATTR) != "none")
     .map((element) => {
+      /**@type {keyof typeof animation_type_map} */
       let animation_type = element.getAttribute(ANIMATE_ATTR);
+      if (!(animation_type in animation_type_map)) return Promise.resolve();
+
+      let animation = animation_type_map[animation_type];
 
       return new Promise((res) => {
-        slide_animation.run(element, { direction }).onfinish = res;
+        animation.run(element, { direction }).onfinish = res;
       });
     });
 
