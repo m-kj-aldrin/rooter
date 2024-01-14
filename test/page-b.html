@@ -1,58 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>rooter</title>
-    <link rel="stylesheet" href="main.css" />
-    <script type="module" src="index.js"></script>
-    <script>
-      console.log("This is inline script in page-b");
-    </script>
-  </head>
-  <body data-rooter-animate="none">
-    <header>
-      <nav>
-        <a href="/test">index</a>
-        <a href="/test/page-a.html"><span>page a</span></a>
-        <a href="/test/page-b.html" aria-current="page">page b</a>
-      </nav>
-    </header>
-    <form data-rooter-persist="controlls">
-      <fieldset>
-        <input type="text" />
-      </fieldset>
-    </form>
-    <main data-rooter-animate="fade">
-      <h1>Page B</h1>
-      <article>
-        <h2>Lorem, ipsum dolor.</h2>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero quae
-          porro mollitia, cumque in amet maxime.
-        </p>
-        <ul>
-          <li>Lorem ipsum dolor sit.</li>
-          <li>Hic distinctio dolorem tempora.</li>
-          <li>Temporibus adipisci fugit ipsum?</li>
-          <li>Velit adipisci enim officiis?</li>
-          <li>Quam commodi magnam sint.</li>
-        </ul>
-      </article>
-      <article>
-        <h2>Labore, et tempora!</h2>
-        <p>
-          Ab ad error, ullam obcaecati voluptatibus rerum, magnam placeat
-          dolorum ea unde fugiat expedita nostrum veritatis.
-        </p>
-        <ul>
-          <li>Lorem ipsum dolor sit.</li>
-          <li>Iure ex beatae deserunt.</li>
-          <li>Officia quam at sunt.</li>
-          <li>Culpa quos earum deleniti.</li>
-          <li>Aliquam pariatur architecto perferendis.</li>
-        </ul>
-      </article>
-    </main>
-  </body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>rooter</title>
+
+        <link rel="stylesheet" href="main.css" />
+        <link rel="stylesheet" href="extra.css" />
+
+        <script type="module" src="index.js"></script>
+
+        <script>
+            console.log("This is inline script in page-b");
+        </script>
+    </head>
+    <body data-rooter-animate="none">
+        <header>
+            <nav>
+                <a href="/test/">index</a>
+                <a href="/test/page-a.html"><span>page a</span></a>
+                <a href="/test/page-b.html" aria-current="page">page b</a>
+            </nav>
+        </header>
+        <form data-rooter-persist="controlls">
+            <fieldset>
+                <input type="text" />
+            </fieldset>
+        </form>
+        <main data-rooter-animate="fade">
+            <h1>Page B</h1>
+            <article>
+                <h2>Lorem, ipsum dolor.</h2>
+                <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Vero quae porro mollitia, cumque in amet maxime.
+                </p>
+                <ul>
+                    <li>Lorem ipsum dolor sit.</li>
+                    <li>Hic distinctio dolorem tempora.</li>
+                    <li>Temporibus adipisci fugit ipsum?</li>
+                    <li>Velit adipisci enim officiis?</li>
+                    <li>Quam commodi magnam sint.</li>
+                </ul>
+            </article>
+            <article>
+                <h2>Labore, et tempora!</h2>
+                <p>
+                    Ab ad error, ullam obcaecati voluptatibus rerum, magnam
+                    placeat dolorum ea unde fugiat expedita nostrum veritatis.
+                </p>
+                <ul>
+                    <li>Lorem ipsum dolor sit.</li>
+                    <li>Iure ex beatae deserunt.</li>
+                    <li>Officia quam at sunt.</li>
+                    <li>Culpa quos earum deleniti.</li>
+                    <li>Aliquam pariatur architecto perferendis.</li>
+                </ul>
+            </article>
+        </main>
+    </body>
 </html>

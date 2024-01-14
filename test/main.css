@@ -1,8 +1,12 @@
 body {
     background-color: gainsboro;
+
+    color: blueviolet;
 }
 
-[aria-current="page"]{
+[aria-current="page"] {
     background-color: black;
     color: white;
+
+    /* filter: hue-rotate(); */
 }
