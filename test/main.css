@@ -10,3 +10,25 @@ body {
 
     /* filter: hue-rotate(); */
 }
+
+#progress-bar{
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: gray;
+    height: 4px;
+}
+
+#progress-bar::after{
+    position: absolute;
+    content: '';
+    height: 100%;
+
+    width: 0%;
+
+    /* --value: 0;
+    height: calc(var(--value) * 100%); */
+
+    background-color: red;
+}
