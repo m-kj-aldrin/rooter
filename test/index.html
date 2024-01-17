@@ -1,52 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>rooter</title>
-        <script type="module" src="index.js"></script>
 
-        <link rel="stylesheet" href="main.css" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>rooter</title>
+  <script type="module" src="index.js"></script>
 
-        <style>
-            h1 {
-                color: orange;
-            }
-        </style>
+  <link rel="stylesheet" href="main.css" />
 
-        <script type="module">
-            // {
-            //     let input = document.querySelector("input");
-            //     console.log("this is value", input.value);
-            // }
-        </script>
-    </head>
-    <body data-rooter-animate="none">
-        <div id="progress-bar" data-rooter-persist="progress"></div>
-        <!-- <progress
-            value="0"
-            max="100"
-            data-rooter-persist="nav-progress"
-        ></progress> -->
-        <header>
-            <nav>
-                <a href="/test" aria-current="page">index</a>
-                <a href="/test/page-a.html"><span>page a</span></a>
-                <a href="/test/page-b.html">page b</a>
-            </nav>
-        </header>
-        <form data-rooter-persist="controlls">
-            <fieldset>
-                <input type="text" />
-            </fieldset>
-        </form>
-        <main data-rooter-animate="slide">
-            <h1>Index</h1>
-            <article>
-                <h2>Lorem, ipsum.</h2>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                <p>Earum quo sunt ratione! Optio eos corrupti impedit?</p>
-            </article>
-        </main>
-    </body>
+  <style>
+    h1 {
+      color: orange;
+    }
+  </style>
+
+  <script type="module"></script>
+</head>
+
+<body data-rooter-animate="none">
+  <div id="progress-bar" data-rooter-persist="progress"></div>
+  <header>
+    <nav>
+      <a href="/test" aria-current="page">index</a>
+      <a href="/test/page-a.html"><span>page a</span></a>
+      <a href="/test/page-b.html">page b</a>
+    </nav>
+  </header>
+  <form data-rooter-persist="controlls">
+    <fieldset>
+      <input type="text" />
+    </fieldset>
+  </form>
+  <main data-rooter-animate="slide">
+    <h1>Index</h1>
+    <article>
+      <h2>Lorem, ipsum.</h2>
+      <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+      <p>Earum quo sunt ratione! Optio eos corrupti impedit?</p>
+    </article>
+  </main>
+</body>
+
 </html>

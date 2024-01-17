@@ -1,97 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>rooter</title>
-        <script type="module" src="index.js"></script>
-        <script type="module" src="module-a.js"></script>
 
-        <link rel="stylesheet" href="main.css" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>rooter</title>
+  <script type="module" src="index.js"></script>
+  <script type="module" src="module-a.js"></script>
 
-        <style>
-            p {
-                color: orange;
-            }
-        </style>
-    </head>
-    <body data-rooter-animate="none">
-        <div id="progress-bar" data-rooter-persist="progress"></div>
-        <!-- <progress
-            value="0"
-            max="100"
-            data-rooter-persist="nav-progress"
-        ></progress> -->
-        <header>
-            <nav>
-                <a href="/test/">index</a>
-                <a href="/test/page-a.html" aria-current="page"
-                    ><span>page a</span></a
-                >
-                <a href="/test/page-b.html">page b</a>
-            </nav>
-        </header>
-        <form data-rooter-persist="controlls">
-            <fieldset>
-                <input type="text" />
-            </fieldset>
-        </form>
-        <main data-rooter-animate="fade">
-            <h1>Page A</h1>
-            <article>
-                <ul>
-                    <li>
-                        <h3>Lorem, ipsum dolor.</h3>
-                        <p>Lorem ipsum dolor sit amet.</p>
-                    </li>
-                    <li>
-                        <h3>Cupiditate, labore vero!</h3>
-                        <p>Corrupti quasi excepturi saepe dolores.</p>
-                    </li>
-                    <li>
-                        <h3>Recusandae, nam nostrum?</h3>
-                        <p>Recusandae deleniti iusto commodi consequuntur!</p>
-                    </li>
-                    <li>
-                        <h3>Nihil, facilis necessitatibus.</h3>
-                        <p>Ab nulla eum necessitatibus cumque?</p>
-                    </li>
-                    <li>
-                        <h3>Impedit, laborum doloremque.</h3>
-                        <p>Possimus illo alias nesciunt ullam.</p>
-                    </li>
-                    <li>
-                        <h3>Magni, vel veritatis.</h3>
-                        <p>Magnam enim in deleniti labore.</p>
-                    </li>
-                </ul>
-                <ul>
-                    <li>
-                        <h3>Lorem, ipsum dolor.</h3>
-                        <p>Lorem ipsum dolor sit amet.</p>
-                    </li>
-                    <li>
-                        <h3>Ullam, est recusandae.</h3>
-                        <p>Excepturi vitae nisi accusantium nobis?</p>
-                    </li>
-                    <li>
-                        <h3>Veniam, officiis. Minima.</h3>
-                        <p>Pariatur eveniet unde adipisci ex!</p>
-                    </li>
-                    <li>
-                        <h3>Ducimus, praesentium magni.</h3>
-                        <p>Distinctio ipsum sunt ducimus inventore!</p>
-                    </li>
-                    <li>
-                        <h3>Unde, sed rerum.</h3>
-                        <p>Illo aperiam incidunt facere quod?</p>
-                    </li>
-                    <li>
-                        <h3>Error, eveniet nostrum.</h3>
-                        <p>Porro impedit magnam repudiandae laudantium?</p>
-                    </li>
-                </ul>
-            </article>
-        </main>
-    </body>
+  <link rel="stylesheet" href="main.css" />
+
+  <style>
+    p {
+      color: orange;
+    }
+  </style>
+</head>
+
+<body data-rooter-animate="none">
+  <div id="progress-bar" data-rooter-persist="progress"></div>
+  <header>
+    <nav>
+      <a href="/test/">index</a>
+      <a href="/test/page-a.html" aria-current="page"><span>page a</span></a>
+      <a href="/test/page-b.html">page b</a>
+    </nav>
+  </header>
+  <form data-rooter-persist="controlls">
+    <fieldset>
+      <input type="text" />
+    </fieldset>
+  </form>
+  <main data-rooter-animate="fade">
+    <h1>Page A</h1>
+    <article>
+      <ul>
+        <li>
+          <h3>Lorem, ipsum dolor.</h3>
+          <p>Lorem ipsum dolor sit amet.</p>
+        </li>
+        <li>
+          <h3>Cupiditate, labore vero!</h3>
+          <p>Corrupti quasi excepturi saepe dolores.</p>
+        </li>
+        <li>
+          <h3>Recusandae, nam nostrum?</h3>
+          <p>Recusandae deleniti iusto commodi consequuntur!</p>
+        </li>
+        <li>
+          <h3>Nihil, facilis necessitatibus.</h3>
+          <p>Ab nulla eum necessitatibus cumque?</p>
+        </li>
+        <li>
+          <h3>Impedit, laborum doloremque.</h3>
+          <p>Possimus illo alias nesciunt ullam.</p>
+        </li>
+        <li>
+          <h3>Magni, vel veritatis.</h3>
+          <p>Magnam enim in deleniti labore.</p>
+        </li>
+      </ul>
+      <ul>
+        <li>
+          <h3>Lorem, ipsum dolor.</h3>
+          <p>Lorem ipsum dolor sit amet.</p>
+        </li>
+        <li>
+          <h3>Ullam, est recusandae.</h3>
+          <p>Excepturi vitae nisi accusantium nobis?</p>
+        </li>
+        <li>
+          <h3>Veniam, officiis. Minima.</h3>
+          <p>Pariatur eveniet unde adipisci ex!</p>
+        </li>
+        <li>
+          <h3>Ducimus, praesentium magni.</h3>
+          <p>Distinctio ipsum sunt ducimus inventore!</p>
+        </li>
+        <li>
+          <h3>Unde, sed rerum.</h3>
+          <p>Illo aperiam incidunt facere quod?</p>
+        </li>
+        <li>
+          <h3>Error, eveniet nostrum.</h3>
+          <p>Porro impedit magnam repudiandae laudantium?</p>
+        </li>
+      </ul>
+    </article>
+  </main>
+</body>
+
 </html>
