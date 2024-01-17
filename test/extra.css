@@ -1,11 +1,7 @@
-body{
-    /* background-color: aliceblue; */
-}
-
 p {
-    background-color: peachpuff;
+  background-color: peachpuff;
 }
 
 article:nth-of-type(2n) h2 {
-    color: orangered;
+  color: orangered;
 }
