@@ -64,6 +64,8 @@ function mark_incoming_scripts(new_document) {
   }
 }
 
+// TODO, test
+
 /**@param {HTMLScriptElement} source */
 function build_fresh_script(source) {
   let script = document.createElement("script");
@@ -159,6 +161,9 @@ function update_head(new_document) {
   }
 }
 
+/**
+ * @param {string} path
+ */
 async function fetch_document(path) {
   let res = await fetch(path);
   let text = await res.text();
@@ -171,6 +176,9 @@ function get_persist_elements(doc) {
   return doc.querySelectorAll(`[${PERSIST_ATTR}]`);
 }
 
+/**
+ * @param {string} pathname
+ */
 async function route(pathname) {
   window.dispatchEvent(new RouteEvent("fetching"));
 
@@ -302,24 +310,32 @@ let documentElementAnimation;
 
 let progress_el = document.querySelector("#progress-bar");
 
-/**@param {RouteEvent<"fetching">} e */
-function fetching_animation(e) {
+let len = 5000
+
+/**@param {RouteEvent<"fetching">} _e */
+function fetching_animation(_e) {
   documentElementAnimation = progress_el.animate(
     [{ width: "0%" }, { width: "100%" }],
     {
-      duration: 5000,
+      duration: len,
       pseudoElement: "::after",
     }
   );
 }
 
-/**@param {RouteEvent<"fetched">} e */
-function fecthed_animation(e) {
-  documentElementAnimation.cancel();
-  progress_el.animate([{ width: "100%", opacity: 0 }], {
-    duration: 500,
+/**@param {RouteEvent<"fetched">} _e */
+function fecthed_animation(_e) {
+  let f = documentElementAnimation.currentTime / len
+  documentElementAnimation.cancel()
+
+  documentElementAnimation = progress_el.animate([{ width: "100%" }, { width: "100%", opacity: 0.5 }, { width: "100%", opacity: 0 }], {
+    duration: 1000,
     pseudoElement: "::after",
   });
+
+  documentElementAnimation.pause()
+  documentElementAnimation.currentTime = f * 1000
+  documentElementAnimation.play()
 }
 
 window.addEventListener("route-fetching", fetching_animation);
